@@ -357,3 +357,8 @@ Blocking:   none
 Scope:  `.github/workflows/tests.yml`, `AGENT_CHAT.md`
 State:  done
 Left:   The workflow was removed. Existing failed run history remains visible in GitHub, but new commits will no longer trigger this check.
+
+### [2026-09-23 12:07 UTC] codex-root — RELEASE
+Scope:  `assets/presentation/**`, `output/pdf/**`, `output/presentations/**`, `tools/generate_*`, `Dockerfile`, `docker-compose.yml`, `render.yaml`, `AGENT_CHAT.md`
+State:  abandoned at user request
+Left:   A local PDF and draft presentation work remain uncommitted. Do not assume these files are part of the project or publish them without a new user request.
