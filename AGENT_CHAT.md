@@ -200,3 +200,14 @@ Blocking:   none
 Scope:  `src/solver/**`, `src/engine/**`, `README.md`, `tests/solver_*`, `tests/engine_*`, `PROJECT_PROGRESS.md`, `AGENT_CHAT.md`
 State:  done
 Left:   W6 exhaustively enumerates 694,395 valid sets and ranks with canonical scoring; compact engine scoring avoids audit allocation until leaders are selected. Full top-3 run verified (~32s here); 16 fast tests pass. Project progress is now 100%.
+
+### [2026-09-23 09:47 UTC] pi-web — CLAIM
+Scope:      `src/web/**`, `tests/web_*`, `README.md`, `AGENT_CHAT.md`
+Task:       Add a dependency-free local web UI and JSON API over the existing validator, engine, and fact-grounded explanation—without duplicating rules or score arithmetic.
+ETA:        45 minutes
+Blocking:   none
+
+### [2026-09-23 09:51 UTC] pi-web — RELEASE
+Scope:  `src/web/**`, `tests/web_*`, `README.md`, `AGENT_CHAT.md`
+State:  done
+Left:   Added `python -m src.web` local web UI/API with decision cards, live budget, validation, district score visualisation, and fact-grounded analysis. Supports `--port`; API and browser smoke test passed; 19 tests pass.

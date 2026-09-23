@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Аким на 5 часов</title>
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+  <main class="shell">
+    <header class="hero">
+      <p class="eyebrow">ГОРОДСКАЯ ЛАБОРАТОРИЯ · 8 КВАРТАЛОВ</p>
+      <h1>Аким на 5 часов</h1>
+      <p>Соберите пять управленческих решений и увидьте их проверяемый эффект на районы Астаны.</p>
+    </header>
+
+    <section class="budget-card" aria-live="polite">
+      <div><span>Бюджет сценария</span><strong id="budget">0 / 100</strong></div>
+      <div class="progress"><i id="budget-fill"></i></div>
+      <p id="budget-status">Выберите пять мероприятий.</p>
+    </section>
+
+    <section class="builder" aria-labelledby="builder-heading">
+      <div class="section-heading">
+        <div><p class="eyebrow">ВАШ СЦЕНАРИЙ</p><h2 id="builder-heading">Пять решений</h2></div>
+        <button id="calculate" type="button">Рассчитать сценарий <span>→</span></button>
+      </div>
+      <div id="decisions" class="decisions"></div>
+    </section>
+
+    <section id="message" class="message" hidden></section>
+    <section id="result" class="result" hidden aria-live="polite"></section>
+
+    <section class="how">
+      <div><p class="eyebrow">КАК ЭТО РАБОТАЕТ</p><h2>Честная модель, а не чёрный ящик</h2></div>
+      <div class="how-grid">
+        <p><b>1.</b> Бюджет, совместимость и направления проверяются до расчёта.</p>
+        <p><b>2.</b> Эффекты учитывают лаг реализации и синергии.</p>
+        <p><b>3.</b> Итог защищает не только средний результат, но и слабейший район.</p>
+      </div>
+    </section>
+  </main>
+  <template id="decision-template">
+    <article class="decision">
+      <div class="number"></div>
+      <label>Мероприятие<select class="measure"><option value="">Выберите меру</option></select></label>
+      <label class="district-wrap">Район<select class="district"><option value="">Выберите район</option></select></label>
+      <div class="measure-meta">Выберите мероприятие, чтобы увидеть стоимость и эффект.</div>
+    </article>
+  </template>
+  <script src="/app.js"></script>
+</body>
+</html>

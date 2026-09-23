@@ -8,7 +8,7 @@ critical indicators all affect the result.
 The simulator deliberately separates responsibilities:
 
 - rules and scoring are deterministic, local, and testable;
-- the terminal UI only collects and renders decisions—it never recalculates results;
+- the terminal and web UIs only collect and render decisions—they never recalculate results;
 - the AI explanation layer receives the supplied `ScoreResult` audit trail without
   inventing numbers; it has an offline fact-grounded fallback and an injectable LLM adapter.
 
@@ -19,11 +19,21 @@ Requires Python 3.10+; no packages, API keys, or network access are needed.
 ```bash
 git clone https://github.com/BAITC-Hacks/hack-15801fec-hackeron.git
 cd hack-15801fec-hackeron
-python -m src.app
+python -m src.web
 ```
 
-The interactive UI is in Russian to match the task. It prints the catalogue and
-accepts five entries:
+Open **http://127.0.0.1:8000** in a browser. If that port is occupied, choose another:
+
+```bash
+python -m src.web --port 8765
+```
+
+The local web UI provides five decision cards, a live budget meter, validation
+feedback, score/district visualisation, and fact-grounded Russian analysis. It calls
+only the bundled JSON API and works without packages or external services.
+
+The terminal interface remains available with `python -m src.app`. It prints the
+catalogue and accepts five entries:
 
 - district initiative: `M7:nura`
 - city-wide initiative: `M12`
@@ -64,7 +74,7 @@ PYTHONDONTWRITEBYTECODE=1 python -m unittest discover -s tests -p '*_test.py' -v
 
 Tests verify the source baseline (**52.55768**, shown as 52.56), the reference set,
 lag scaling, non-lag-scaled synergy, score order-independence, invalid-set behaviour,
-and CLI parsing/rendering.
+CLI parsing/rendering, and the web JSON API.
 
 ## Rules modelled
 
@@ -102,6 +112,7 @@ src/validator/         selection-rule validation
 src/engine/            pure score calculation and result audit trail
 src/solver/            optional exhaustive valid-scenario ranking
 src/app/               Russian CLI (`python -m src.app`)
+src/web/               local web UI and JSON API (`python -m src.web`)
 tests/                 validator, scoring, and UI tests
 INSTRUCTIONS.md        merged, readable hackathon brief and complete source tables
 task/original/         immutable original .docx documents
@@ -140,6 +151,6 @@ for scenario in rank_scenarios(load_dataset(), limit=3):
 
 ## Current scope
 
-The deterministic simulator, fact-grounded analysis, playable CLI, and optional
-scenario ranker are ready. Next planned enhancements are a provider-specific LLM
-adapter and richer visualisation.
+The deterministic simulator, fact-grounded analysis, playable CLI, local web UI, and
+optional scenario ranker are ready. Next planned enhancements are a provider-specific
+LLM adapter and richer visualisation.
