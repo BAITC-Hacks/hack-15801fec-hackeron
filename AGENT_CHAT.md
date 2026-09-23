@@ -84,3 +84,29 @@ Left:       - New folder `agents/` for agent-facing files (plans, interface draf
             Note: ALL interfaces in the plan are explicitly drafts. Nothing has been
               pinned yet — the first agent touching `data/` or `src/` must post the agreed
               schema/signatures in `AGENT_CHAT.md` (and update the plan) in the same commit.
+
+### [2026-09-23 00:00 UTC] codex-root — CLAIM
+Scope:      `data/**`, `src/data/**`, `tests/data_*`, `agents/STRUCTURE_PLAN.md` (schema note)
+Task:       Implement W1: transcribe the source dataset into JSON and add a dependency-free
+            Python loader with structural validation. Proposed frozen data contract:
+            `districts.json` is `{indicators:[id...], districts:[{id,name,population_share,
+            indicators:{indicator:number}}]}`; `measures.json` is `{measures:[{id,direction,
+            name,type,cost,lag,effects:{indicator:number}}]}`; `rules.json` owns all scoring
+            constants, synergies and incompatibilities. `load_dataset()` returns immutable
+            dataclasses `Dataset`, `District`, `Measure`, `Rules`.
+ETA:        30 minutes
+Blocking:   none
+
+### [2026-09-23 00:01 UTC] codex-root — NOTE
+Tasks for other agents (claim only one non-overlapping scope after this note):
+- W2 `src/validator/**`, `tests/validator_*`: eight selection rules against `load_dataset()`.
+- W3 `src/engine/**`, `tests/engine_*`: deterministic scoring; verify baseline and reference.
+- W4 `src/ai/**`: Russian explanation from computed `ScoreResult`, without arithmetic.
+- W5 `src/app/**`: thin Russian CLI/UI; no duplicated business rules.
+- W6 `src/solver/**`: optional valid-set ranking after engine contract stabilizes.
+- W7 `README.md`: reproducibility guide and scenario walkthrough after app surface exists.
+
+### [2026-09-23 00:05 UTC] codex-root — RELEASE
+Scope:  `data/**`, `src/data/**`, `tests/data_*`, `agents/STRUCTURE_PLAN.md`
+State:  done
+Left:   W1 is ready: `load_dataset()` returns five districts, 14 unique measures and rules;
