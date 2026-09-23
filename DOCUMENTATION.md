@@ -1,30 +1,20 @@
 # DOCUMENTATION
 
-Documentation for the `hack-15801fec-hackeron` repository: what is in it, where the
-hackathon task materials live, and how the derived files were produced.
-
-> Coordination rules for this shared, multi-agent repo live in `AGENTS.md`; the team
-> message log is `AGENT_CHAT.md`. Read both before editing anything.
+Documentation for the `hack-15801fec-hackeron` submission: source-material provenance
+and the layout of the delivered simulator.
 
 ## 1. Repository layout
 
 ```
 .
-├── AGENTS.md          # multi-agent coordination protocol (read first)
-├── AGENT_CHAT.md      # append-only agent message log (CLAIM/UPDATE/RELEASE)
-├── DOCUMENTATION.md   # this file — repo/provenance documentation
-├── INSTRUCTIONS.md    # single consolidated task instructions (both source docs merged)
-├── README.md          # repo title
-├── agents/            # agent-facing working files (plans, drafts, decision records)
-│   ├── README.md      # purpose of the folder + index of agent documents
-│   └── STRUCTURE_PLAN.md  # general structure plan for the simulator (draft, not implemented)
-└── task/
-    ├── original/      # untouched source documents (the originals of record)
-    │   ├── HackAlem_AI_«Аким_на_5_часов»_AI_симулятор_управления_городом.docx
-    │   └── Датасет районов.docx
-    └── txt/           # plain-text conversions of the two .docx files
-        ├── HackAlem_AI_«Аким_на_5_часов»_AI_симулятор_управления_городом.txt
-        └── Датасет районов.txt
+├── data/              # districts, measures and canonical scoring rules
+├── src/               # loader, validator, engine, explanation, CLI, web UI and solver
+├── tests/             # automated verification
+├── task/              # immutable source documents and their text conversions
+├── README.md          # launch, architecture and walkthrough
+├── JUDGE_SCORECARD.md # rubric-mapped verification guide for the jury
+├── INSTRUCTIONS.md    # consolidated task brief, data and rules
+└── DOCUMENTATION.md   # this provenance document
 ```
 
 ## 2. Source materials
@@ -38,11 +28,6 @@ Life Score simulator). They were delivered in `task/` and moved unchanged into
 | --- | --- |
 | `HackAlem_AI_«Аким_на_5_часов»_AI_симулятор_управления_городом.docx` | Task brief: problem, user, deliverables, must-have/optional features, verification criteria, 100-point judging rubric |
 | `Датасет районов.docx` | Data spec: 5 districts and 10 indicators (0–100), 14 measures with costs/lags/effects, synergies, incompatibilities, scoring formula, 8 rules |
-
-`agents/` is documentation only: it holds the structure plan and other working notes
-written for agents, while the coordination log itself stays in `AGENT_CHAT.md`. See
-`agents/README.md` for the index and `agents/STRUCTURE_PLAN.md` for the proposed target
-layout, components, interfaces and parallel workstreams of the simulator.
 
 Neither document contains embedded images (`word/media/` is absent in both `.docx`
 packages); the brief's content is one text table plus paragraphs.
@@ -125,13 +110,12 @@ soffice --headless --convert-to txt:Text --outdir ../txt *.docx
 sha256sum task/original/*.docx task/txt/*.txt
 ```
 
-Only `libreoffice`/`soffice` is required. There is no build system, test suite, or
-application code in this repository yet — the current contents are task materials,
-coordination/documentation files, and the agent-facing docs in `agents/`.
+Only `libreoffice`/`soffice` is required to regenerate the text conversions; it is
+not required to run the simulator. The delivered application, tests and launch steps are
+described in `README.md`.
 
-## 6. Working in this repo
+## 6. Submission contents
 
-All contributors (human or agent) must follow `AGENTS.md`: `git pull --rebase` before
-starting, post a `CLAIM` entry in `AGENT_CHAT.md` before touching a scope, commit in small
-increments, and post a `RELEASE` when stopping. Never overwrite or delete the files in
-`task/original/` — they are the immutable originals of record.
+The repository retains the task originals and their provenance so that the synthetic
+dataset and model rules can be audited against the brief. Do not overwrite or delete the
+files in `task/original/`: they are the immutable originals of record.
