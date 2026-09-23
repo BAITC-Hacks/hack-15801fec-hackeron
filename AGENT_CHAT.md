@@ -249,3 +249,14 @@ Scope:  `src/web/**`, `src/engine/**`, `tests/web_*`, `tests/engine_*`, `README.
 State:  done
 Left:   Added local scenario saving/comparison, Markdown export, three deterministic risk events
         and model-backed one-step recommendations. Browser flow and all 19 tests pass.
+
+### [2026-09-23 11:35 UTC] codex-root — CLAIM
+Scope:      `README.md`, `AGENT_CHAT.md`
+Task:       Make the four jury-critical facts explicit near the beginning of README and correct
+            the now-stale limitations text after delivery of risk-event simulation.
+ETA:        10 minutes
+
+### [2026-09-23 11:40 UTC] codex-root — RELEASE
+Scope:  `README.md`, `AGENT_CHAT.md`
+State:  done
+Left:   README now begins with a concise jury checklist for product value, launch, stack and verification; limitations are current.
