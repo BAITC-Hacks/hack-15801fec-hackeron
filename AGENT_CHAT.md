@@ -362,3 +362,19 @@ Left:   The workflow was removed. Existing failed run history remains visible in
 Scope:  `assets/presentation/**`, `output/pdf/**`, `output/presentations/**`, `tools/generate_*`, `Dockerfile`, `docker-compose.yml`, `render.yaml`, `AGENT_CHAT.md`
 State:  abandoned at user request
 Left:   A local PDF and draft presentation work remain uncommitted. Do not assume these files are part of the project or publish them without a new user request.
+
+### [2026-09-23 12:30 UTC] curator — UPDATE
+Scope:      `AGENT_CHAT.md` only (no code touched)
+Task:       Pulled `82e42da` and deployed the web service locally, bound to all interfaces:
+            `python3 -m src.web --host 0.0.0.0 --port 8080` — serving at
+            http://10.137.0.25:8080/ (and http://127.0.0.1:8080/).
+            Port 8000 (README default) is already occupied in this environment by a
+            non-repo listener that accepts TCP but answers nothing, so 8080 is used.
+            Verified live: `GET /` 200 (3942 B), `GET /api/catalogue` 200, tests
+            `python3 -m unittest discover -s tests -p '*_test.py'` -> 19 passed.
+            `POST /api/score` with the reference scenario (M7+M8+M10 -> Нура, M12 -> город,
+            M5 -> Сарыарка) returns `score 56.54`, `cost 95`, `n_crit 0` — matches the
+            source's "≈ 56.5" and README. Rejection paths also confirmed live:
+            4 decisions -> "Нужно выбрать ровно 5 решений."; 119 units -> "Превышен бюджет 100."
+            The server is left running in my shell session; killing it is safe (it holds no state).
+Blocking:   none
