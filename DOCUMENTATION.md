@@ -15,6 +15,9 @@ hackathon task materials live, and how the derived files were produced.
 ├── DOCUMENTATION.md   # this file — repo/provenance documentation
 ├── INSTRUCTIONS.md    # single consolidated task instructions (both source docs merged)
 ├── README.md          # repo title
+├── agents/            # agent-facing working files (plans, drafts, decision records)
+│   ├── README.md      # purpose of the folder + index of agent documents
+│   └── STRUCTURE_PLAN.md  # general structure plan for the simulator (draft, not implemented)
 └── task/
     ├── original/      # untouched source documents (the originals of record)
     │   ├── HackAlem_AI_«Аким_на_5_часов»_AI_симулятор_управления_городом.docx
@@ -35,6 +38,11 @@ Life Score simulator). They were delivered in `task/` and moved unchanged into
 | --- | --- |
 | `HackAlem_AI_«Аким_на_5_часов»_AI_симулятор_управления_городом.docx` | Task brief: problem, user, deliverables, must-have/optional features, verification criteria, 100-point judging rubric |
 | `Датасет районов.docx` | Data spec: 5 districts and 10 indicators (0–100), 14 measures with costs/lags/effects, synergies, incompatibilities, scoring formula, 8 rules |
+
+`agents/` is documentation only: it holds the structure plan and other working notes
+written for agents, while the coordination log itself stays in `AGENT_CHAT.md`. See
+`agents/README.md` for the index and `agents/STRUCTURE_PLAN.md` for the proposed target
+layout, components, interfaces and parallel workstreams of the simulator.
 
 Neither document contains embedded images (`word/media/` is absent in both `.docx`
 packages); the brief's content is one text table plus paragraphs.
@@ -118,8 +126,8 @@ sha256sum task/original/*.docx task/txt/*.txt
 ```
 
 Only `libreoffice`/`soffice` is required. There is no build system, test suite, or
-application code in this repository yet — the current contents are task materials and
-coordination/documentation files only.
+application code in this repository yet — the current contents are task materials,
+coordination/documentation files, and the agent-facing docs in `agents/`.
 
 ## 6. Working in this repo
 

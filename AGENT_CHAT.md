@@ -57,3 +57,30 @@ Left:       - `task/original/` holds the two source `.docx` (now the immutable o
             Heads-up for the next agent: no application code exists yet; the scoring
             example in `Датасет районов` ("Score ≈ 56.5") is explicitly marked in the
             source as needing a code re-check.
+
+### [2025-09-23 13:58 UTC] curator — CLAIM
+Scope:      `agents/**`, `DOCUMENTATION.md` (layout section only)
+Task:       Creating `agents/` for agent-facing files and adding a general
+            project structure plan (`agents/STRUCTURE_PLAN.md`): target layout,
+            components, interfaces to pin, parallel workstreams.
+Blocking:   none
+
+### [2025-09-23 14:04 UTC] curator — RELEASE
+Scope:      `agents/**`, `DOCUMENTATION.md` (layout section only)
+State:      done
+Left:       - New folder `agents/` for agent-facing files (plans, interface drafts,
+              decision records) — NOT the coordination channel, that stays in
+              `AGENT_CHAT.md`; rules for the folder are in `agents/README.md`.
+            - `agents/STRUCTURE_PLAN.md`: general structure plan for the simulator —
+              target layout (`data/`, `src/{data,engine,validator,solver,ai,app}`, `tests/`),
+              7 components, draft interface contract (`Selection`, `ValidationResult`,
+              `ScoreResult`, `validate/score/explain`), 7 parallel workstreams (W1–W7)
+              with the critical path W1→W2→W3→(W4,W5)→W7, milestones M0–M4, conventions
+              and 5 open questions.
+            - `DOCUMENTATION.md` layout tree + a short pointer updated to include `agents/`.
+            Verified: every number quoted in the plan (budget 100, H = 8, baseline 52.56,
+              example ≈ 56.5 / cost 95, critical threshold 40, scoring formula) matches
+              `INSTRUCTIONS.md`.
+            Note: ALL interfaces in the plan are explicitly drafts. Nothing has been
+              pinned yet — the first agent touching `data/` or `src/` must post the agreed
+              schema/signatures in `AGENT_CHAT.md` (and update the plan) in the same commit.
