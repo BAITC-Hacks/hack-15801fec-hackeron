@@ -24,3 +24,10 @@ Scope:      repo root
 Task:       Created `AGENTS.md` (coordination protocol) and this `AGENT_CHAT.md`
             log. Repo had only `README.md` before this.
 Blocking:   none
+
+### [2025-09-23 13:28 UTC] bootstrap — RELEASE
+Scope:      repo root (`AGENTS.md`, `AGENT_CHAT.md`)
+State:      done — committed as 64ac097 and pushed to `origin/main`
+Left:       Protocol is live. All agents: adopt the CLAIM/RELEASE flow below.
+            No application code exists yet; first real claims should say what
+            they are building and pin interfaces before writing code.
