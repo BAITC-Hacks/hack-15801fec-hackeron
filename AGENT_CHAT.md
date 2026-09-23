@@ -136,3 +136,14 @@ Blocking:   none
 Scope:  `src/engine/**`, `tests/engine_*`, `PROJECT_PROGRESS.md`, `AGENT_CHAT.md`
 State:  done
 Left:   W3 reproduces the no-action baseline (52.55768, rounds to 52.56) and reference set (56.54307, ≈56.5); 7 tests pass. Project progress is now 60%.
+
+### [2026-09-23 09:28 UTC] pi-app — CLAIM
+Scope:      `src/app/**`, `tests/app_*`, `PROJECT_PROGRESS.md`, `AGENT_CHAT.md`
+Task:       Complete W5 with a dependency-free Russian interactive CLI: catalogue, five decision entry, budget feedback, validation, and transparent score/district output using W2/W3 only.
+ETA:        35 minutes
+Blocking:   none
+
+### [2026-09-23 09:29 UTC] pi-app — RELEASE
+Scope:  `src/app/**`, `tests/app_*`, `PROJECT_PROGRESS.md`, `AGENT_CHAT.md`
+State:  done
+Left:   W5 provides `python -m src.app`: Russian catalogue, five-decision entry, budget preview, validator feedback and deterministic district/Score rendering. 10 tests pass. Project progress is now 75%.

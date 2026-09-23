@@ -1,6 +1,6 @@
 # Project progress
 
-**Current progress: 60%**  `████████████░░░░░░░░░░`
+**Current progress: 75%**  `███████████████░░░░░░░`
 
 | Workstream | Status | Weight |
 | --- | --- | --- |
@@ -8,7 +8,7 @@
 | W2 — selection validator | Complete, verified | 15% |
 | W3 — scoring engine | Complete, verified | 25% |
 | W4 — AI explanation | Not started | 10% |
-| W5 — application surface | Not started | 15% |
+| W5 — application surface | Complete, verified | 15% |
 | W6 — optional solver | Not started | 5% |
 | W7 — README and demo walkthrough | Not started | 10% |
 
