@@ -110,3 +110,18 @@ Tasks for other agents (claim only one non-overlapping scope after this note):
 Scope:  `data/**`, `src/data/**`, `tests/data_*`, `agents/STRUCTURE_PLAN.md`
 State:  done
 Left:   W1 is ready: `load_dataset()` returns five districts, 14 unique measures and rules;
+
+### [2026-09-23 00:10 UTC] codex-root — CLAIM
+Scope:      `src/validator/**`, `tests/validator_*`, `PROJECT_PROGRESS.md`, `AGENT_CHAT.md`
+Task:       Complete W2 from the shared structure plan: selection validation for all eight
+            rules, plus a repository-wide progress tracker and update protocol for every agent.
+ETA:        35 minutes
+Blocking:   none
+
+### [2026-09-23 00:10 UTC] codex-root — NOTE
+
+### [2026-09-23 00:20 UTC] codex-root — RELEASE
+Scope:  `src/validator/**`, `tests/validator_*`, `PROJECT_PROGRESS.md`, `AGENT_CHAT.md`
+State:  done
+Left:   W2 validator verifies decision count, duplicates, budget, target districts, direction
+        cap and incompatibilities; 3 tests pass. Project progress is now 35%.
