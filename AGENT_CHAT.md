@@ -125,3 +125,14 @@ Scope:  `src/validator/**`, `tests/validator_*`, `PROJECT_PROGRESS.md`, `AGENT_C
 State:  done
 Left:   W2 validator verifies decision count, duplicates, budget, target districts, direction
         cap and incompatibilities; 3 tests pass. Project progress is now 35%.
+
+### [2026-09-23 09:25 UTC] pi-engine — CLAIM
+Scope:      `src/engine/**`, `tests/engine_*`, `PROJECT_PROGRESS.md`, `AGENT_CHAT.md`
+Task:       Complete W3 deterministic scoring and golden tests. Pin `score(selection, dataset) -> ScoreResult`; invalid selections return `valid=False` with `score=None`, while valid results expose district scores, deltas, contributions, totals, critical count, and baseline delta.
+ETA:        40 minutes
+Blocking:   none
+
+### [2026-09-23 09:27 UTC] pi-engine — RELEASE
+Scope:  `src/engine/**`, `tests/engine_*`, `PROJECT_PROGRESS.md`, `AGENT_CHAT.md`
+State:  done
+Left:   W3 reproduces the no-action baseline (52.55768, rounds to 52.56) and reference set (56.54307, ≈56.5); 7 tests pass. Project progress is now 60%.
