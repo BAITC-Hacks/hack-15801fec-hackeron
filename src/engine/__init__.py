@@ -7,6 +7,7 @@ from .scoring import (
     ScoreResult,
     score,
     score_baseline,
+    score_value,
 )
 
 __all__ = [
@@ -16,4 +17,5 @@ __all__ = [
     "ScoreResult",
     "score",
     "score_baseline",
+    "score_value",
 ]

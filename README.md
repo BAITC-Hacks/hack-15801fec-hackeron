@@ -100,6 +100,7 @@ data/                  source-traceable districts, measures, and scoring rules
 src/data/              dependency-free JSON loader and typed dataset
 src/validator/         selection-rule validation
 src/engine/            pure score calculation and result audit trail
+src/solver/            optional exhaustive valid-scenario ranking
 src/app/               Russian CLI (`python -m src.app`)
 tests/                 validator, scoring, and UI tests
 INSTRUCTIONS.md        merged, readable hackathon brief and complete source tables
@@ -123,8 +124,22 @@ fact-grounded Russian narrative by default; pass a callable or a provider adapte
 `complete(prompt)` to use an LLM. The generated prompt contains only these computed
 facts and explicitly forbids arithmetic or invented numbers.
 
+## Optional scenario ranking
+
+The solver evaluates every valid five-decision scenario with the canonical validator
+and compact engine path, then constructs full audit results only for the leaders. It
+is intentionally exhaustive and may take tens of seconds on a typical laptop:
+
+```python
+from src.data import load_dataset
+from src.solver import rank_scenarios
+
+for scenario in rank_scenarios(load_dataset(), limit=3):
+    print(scenario.result.score, scenario.selection)
+```
+
 ## Current scope
 
-The deterministic simulator, fact-grounded analysis, and playable CLI are ready. Next
-planned enhancements are a provider-specific LLM adapter, a valid-scenario ranking
-helper, and richer visualisation.
+The deterministic simulator, fact-grounded analysis, playable CLI, and optional
+scenario ranker are ready. Next planned enhancements are a provider-specific LLM
+adapter and richer visualisation.

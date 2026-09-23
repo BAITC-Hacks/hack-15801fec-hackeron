@@ -179,3 +179,24 @@ Blocking:   none
 Scope:  `src/ai/**`, `src/app/**`, `README.md`, `tests/ai_*`, `tests/app_*`, `PROJECT_PROGRESS.md`, `AGENT_CHAT.md`
 State:  done
 Left:   W4 renders a Russian fact-grounded analysis in the CLI and exposes an LLM-ready prompt plus injectable adapter; no score arithmetic occurs outside W3. 14 tests pass. Project progress is now 95%. W6 solver remains optional.
+
+### [2026-09-23 09:33 UTC] pi-solver — CLAIM
+Scope:      `src/solver/**`, `tests/solver_*`, `PROJECT_PROGRESS.md`, `AGENT_CHAT.md`
+Task:       Complete optional W6: enumerate valid five-decision scenarios and rank them deterministically by the W3 score, without duplicating rules.
+ETA:        35 minutes
+Blocking:   none
+
+### [2026-09-23 09:39 UTC] pi-solver — UPDATE
+Scope:      `src/solver/**`, `src/engine/**`, `tests/solver_*`, `tests/engine_*`, `PROJECT_PROGRESS.md`, `AGENT_CHAT.md`
+Task:       Enumeration found 694,395 valid scenarios but full audit scoring is too slow for ranking. Expanding scope to add an engine-owned compact score-value API, then retain audit objects only for the top results.
+Blocking:   none
+
+### [2026-09-23 09:41 UTC] pi-solver — UPDATE
+Scope:      `src/solver/**`, `src/engine/**`, `README.md`, `tests/solver_*`, `tests/engine_*`, `PROJECT_PROGRESS.md`, `AGENT_CHAT.md`
+Task:       Solver and compact engine score path are verified. Expanding scope to document the optional exhaustive ranker and remove its stale roadmap entry.
+Blocking:   none
+
+### [2026-09-23 09:42 UTC] pi-solver — RELEASE
+Scope:  `src/solver/**`, `src/engine/**`, `README.md`, `tests/solver_*`, `tests/engine_*`, `PROJECT_PROGRESS.md`, `AGENT_CHAT.md`
+State:  done
+Left:   W6 exhaustively enumerates 694,395 valid sets and ranks with canonical scoring; compact engine scoring avoids audit allocation until leaders are selected. Full top-3 run verified (~32s here); 16 fast tests pass. Project progress is now 100%.

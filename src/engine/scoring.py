@@ -119,40 +119,7 @@ def score_baseline(dataset: "Dataset") -> ScoreResult:
 
 def _calculate(selection: Selection, dataset: "Dataset") -> ScoreResult:
     """Apply effects and calculate scores; callers handle selection validity."""
-    measures = {measure.id: measure for measure in dataset.measures}
-    districts = {district.id: district for district in dataset.districts}
-    horizon = float(dataset.rules["horizon_quarters"])
-    changes = {
-        district.id: {indicator: 0.0 for indicator in dataset.indicators}
-        for district in dataset.districts
-    }
-    contributions: list[MeasureContribution] = []
-
-    for item in selection.items:
-        measure = measures[item.measure_id]
-        target_ids = tuple(districts) if measure.type == "city" else (item.district,)
-        scale = (horizon - measure.lag) / horizon
-        for district_id in target_ids:
-            for indicator, effect in measure.effects.items():
-                delta = effect * scale
-                changes[district_id][indicator] += delta
-                contributions.append(
-                    MeasureContribution(measure.id, district_id, indicator, delta)
-                )
-
-    selected = {item.measure_id: item for item in selection.items}
-    for synergy in dataset.rules["synergies"]:
-        first, second = synergy["measures"]
-        if first not in selected or second not in selected:
-            continue
-        district_id = selected[synergy["district_from"]].district
-        delta = float(synergy["delta"])
-        indicator = synergy["indicator"]
-        changes[district_id][indicator] += delta
-        contributions.append(
-            MeasureContribution(f"{first}+{second}", district_id, indicator, delta)
-        )
-
+    changes, contributions = _effect_changes(selection, dataset, record_contributions=True)
     weights = dataset.rules["weights"]
     district_results: list[DistrictResult] = []
     after_scores: list[float] = []
@@ -193,6 +160,67 @@ def _calculate(selection: Selection, dataset: "Dataset") -> ScoreResult:
         score_delta=0.0,
         contributions=tuple(contributions),
     )
+
+
+def score_value(selection: Selection, dataset: "Dataset") -> float:
+    """Return a valid selection's score without building its presentation audit.
+
+    ``selection`` must already have passed :func:`src.validator.validate`. This is
+    useful for ranking large valid scenario sets; use :func:`score` for user input.
+    """
+    changes, _ = _effect_changes(selection, dataset, record_contributions=False)
+    weights = dataset.rules["weights"]
+    threshold = float(dataset.rules["critical_threshold"])
+    after_scores: list[float] = []
+    n_crit = 0
+    for district in dataset.districts:
+        after_indicators = {
+            indicator: min(100.0, max(0.0, float(district.indicators[indicator]) + changes[district.id][indicator]))
+            for indicator in dataset.indicators
+        }
+        after_scores.append(_district_score(after_indicators, weights))
+        n_crit += sum(value < threshold for value in after_indicators.values())
+    d_avg = sum(
+        district.population_share * after_score
+        for district, after_score in zip(dataset.districts, after_scores)
+    )
+    return 0.7 * d_avg + 0.3 * min(after_scores) - n_crit
+
+
+def _effect_changes(
+    selection: Selection, dataset: "Dataset", *, record_contributions: bool
+) -> tuple[dict[str, dict[str, float]], list[MeasureContribution]]:
+    """Apply source effects once for both compact and full score calculation."""
+    measures = {measure.id: measure for measure in dataset.measures}
+    district_ids = tuple(district.id for district in dataset.districts)
+    horizon = float(dataset.rules["horizon_quarters"])
+    changes = {
+        district.id: {indicator: 0.0 for indicator in dataset.indicators}
+        for district in dataset.districts
+    }
+    contributions: list[MeasureContribution] = []
+    for item in selection.items:
+        measure = measures[item.measure_id]
+        targets = district_ids if measure.type == "city" else (item.district,)
+        scale = (horizon - measure.lag) / horizon
+        for district_id in targets:
+            for indicator, effect in measure.effects.items():
+                delta = effect * scale
+                changes[district_id][indicator] += delta
+                if record_contributions:
+                    contributions.append(MeasureContribution(measure.id, district_id, indicator, delta))
+    selected = {item.measure_id: item for item in selection.items}
+    for synergy in dataset.rules["synergies"]:
+        first, second = synergy["measures"]
+        if first not in selected or second not in selected:
+            continue
+        district_id = selected[synergy["district_from"]].district
+        indicator = synergy["indicator"]
+        delta = float(synergy["delta"])
+        changes[district_id][indicator] += delta
+        if record_contributions:
+            contributions.append(MeasureContribution(f"{first}+{second}", district_id, indicator, delta))
+    return changes, contributions
 
 
 def _district_score(indicators: object, weights: object) -> float:

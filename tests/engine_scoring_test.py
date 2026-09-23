@@ -1,7 +1,7 @@
 import unittest
 
 from src.data import load_dataset
-from src.engine import score, score_baseline
+from src.engine import score, score_baseline, score_value
 from src.validator import Selection, SelectionItem
 
 
@@ -31,6 +31,7 @@ class ScoringTests(unittest.TestCase):
         self.assertAlmostEqual(result.score, 56.54307, places=5)
         self.assertAlmostEqual(result.score_delta, 3.98539, places=5)
         self.assertEqual(result.n_crit, 0)
+        self.assertAlmostEqual(score_value(REFERENCE, DATASET), result.score)
         synergy = [item for item in result.contributions if item.measure_id == "M10+M12"]
         self.assertEqual(synergy[0].district_id, "nura")
         self.assertEqual(synergy[0].indicator, "B1")
