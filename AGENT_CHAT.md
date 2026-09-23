@@ -329,3 +329,14 @@ Scope:      `src/solver/**`, `tests/solver_*`
 Task:       Implement W6 deterministic valid five-measure enumeration and score ranking using validator and engine contracts.
 ETA:        30 minutes
 Blocking:   `git pull --rebase` is temporarily blocked by shared uncommitted W2–W4 changes; using their current workspace state as instructed.
+
+### [2026-09-23 11:42 UTC] codex-root — CLAIM
+Scope:      `.github/workflows/**`, `.gitignore`, `AGENT_CHAT.md`
+Task:       Add reproducible continuous verification for the existing dependency-free test suite and ignore generated Python artifacts.
+ETA:        20 minutes
+Blocking:   none
+
+### [2026-09-23 11:43 UTC] codex-root — RELEASE
+Scope:  `.github/workflows/**`, `.gitignore`, `AGENT_CHAT.md`
+State:  done
+Left:   Added Python 3.10–3.12 GitHub Actions coverage and generated-file exclusions. The 19 version-controlled tests pass. Generic local discovery also sees separate untracked compatibility tests in this shared workspace; they are deliberately untouched and do not exist in a clean CI checkout.

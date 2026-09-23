@@ -1,0 +1,13 @@
+# Python bytecode and test-run caches are generated locally.
+__pycache__/
+*.py[cod]
+*.pyo
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Local virtual environments and editor metadata.
+.venv/
+venv/
+.idea/
+.vscode/
