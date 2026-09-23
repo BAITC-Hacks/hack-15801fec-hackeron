@@ -236,3 +236,16 @@ Scope:  `src/web/**`, `tests/web_*`, `README.md`, `AGENT_CHAT.md`
 State:  done
 Left:   Added data-backed SVG district score comparison and selectable district indicator
         explorer; API coverage added, browser check and all 19 tests pass.
+
+### [2026-09-23 11:00 UTC] codex-root — CLAIM
+Scope:      `src/web/**`, `src/engine/**`, `tests/web_*`, `tests/engine_*`, `README.md`, `AGENT_CHAT.md`
+Task:       Implement deterministic risk-event scenarios, local scenario comparison/saving,
+            report export and recommendations based on the existing scoring model.
+ETA:        90 minutes
+Blocking:   no LLM provider key is available; only the existing provider-agnostic adapter can be delivered.
+
+### [2026-09-23 11:25 UTC] codex-root — RELEASE
+Scope:  `src/web/**`, `src/engine/**`, `tests/web_*`, `tests/engine_*`, `README.md`, `AGENT_CHAT.md`
+State:  done
+Left:   Added local scenario saving/comparison, Markdown export, three deterministic risk events
+        and model-backed one-step recommendations. Browser flow and all 19 tests pass.

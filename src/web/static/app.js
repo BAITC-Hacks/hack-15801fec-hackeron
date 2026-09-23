@@ -9,6 +9,11 @@ const budgetStatus = document.querySelector("#budget-status");
 const message = document.querySelector("#message");
 const result = document.querySelector("#result");
 const calculate = document.querySelector("#calculate");
+const riskEvent = document.querySelector("#risk-event");
+const saveScenarioButton = document.querySelector("#save-scenario");
+const exportReportButton = document.querySelector("#export-report");
+const scenarioStatus = document.querySelector("#scenario-status");
+const savedScenarios = document.querySelector("#saved-scenarios");
 
 function element(tag, className, text) {
   const node = document.createElement(tag);
@@ -111,11 +116,11 @@ function renderResult(data) {
 async function calculateScenario() {
   message.hidden = true; result.hidden = true; calculate.disabled = true;
   try {
-    const response = await fetch("/api/score", {method: "POST", headers: {"Content-Type": "application/json"}, body: JSON.stringify({items: selectedItems()})});
+    const response = await fetch("/api/score", {method: "POST", headers: {"Content-Type": "application/json"}, body: JSON.stringify({items: selectedItems(), event: riskEvent.value})});
     const data = await response.json();
     if (!response.ok) throw new Error(data.error || "Не удалось рассчитать сценарий.");
     if (!data.valid) showMessage(data.reasons);
-    else renderResult(data);
+    else { lastResult = data; renderResult(data); renderRecommendations(data); }
   } catch (error) { showMessage([error.message]); }
   finally { calculate.disabled = false; }
 }
@@ -124,7 +129,7 @@ async function init() {
   try {
     const response = await fetch("/api/catalogue");
     if (!response.ok) throw new Error("Каталог недоступен.");
-    catalogue = await response.json(); buildRows(); updateBudget(); calculate.addEventListener("click", calculateScenario);
+    catalogue = await response.json(); populateEvents(); buildRows(); updateBudget(); renderSaved(); calculate.addEventListener("click", calculateScenario); saveScenarioButton.addEventListener("click", saveScenario); exportReportButton.addEventListener("click", exportReport);
   } catch (error) { showMessage([error.message]); }
 }
 init();
@@ -196,4 +201,37 @@ function renderIndicatorDetail(target, district) {
     list.append(row);
   });
   target.append(intro, list);
+}
+
+let lastResult = null;
+function populateEvents() { catalogue.events.forEach((event) => riskEvent.add(new Option(event.name, event.id))); }
+function saveScenario() {
+  if (!lastResult || !lastResult.valid) { scenarioStatus.textContent = "Сначала рассчитайте допустимый сценарий."; return; }
+  const saved = JSON.parse(localStorage.getItem("akim-scenarios") || "[]");
+  saved.push({items: selectedItems(), event: riskEvent.value, score: lastResult.score, name: lastResult.event.name});
+  localStorage.setItem("akim-scenarios", JSON.stringify(saved.slice(-6)));
+  scenarioStatus.textContent = "Сценарий сохранён для сравнения в этом браузере."; renderSaved();
+}
+function renderSaved() {
+  const saved = JSON.parse(localStorage.getItem("akim-scenarios") || "[]");
+  savedScenarios.hidden = !saved.length; savedScenarios.replaceChildren(); if (!saved.length) return;
+  savedScenarios.append(element("h3", "", "Сравнение сохранённых сценариев"));
+  const list = element("div", "scenario-list");
+  saved.forEach((item, index) => list.append(element("div", "scenario-row", "#" + (index + 1) + " · " + item.name + " · Score " + item.score.toFixed(2))));
+  savedScenarios.append(list);
+}
+function exportReport() {
+  if (!lastResult || !lastResult.valid) { scenarioStatus.textContent = "Для экспорта нужен рассчитанный допустимый сценарий."; return; }
+  const lines = ["# Отчёт «Аким на 5 часов»", "", "Событие: " + lastResult.event.name, "Score: " + lastResult.score.toFixed(2), "Бюджет: " + lastResult.budget_used + "/100", "", "## Выбранные меры"].concat(selectedItems().map((item) => "- " + item.measure_id + (item.district ? ": " + item.district : ""))).concat(["", lastResult.narrative]);
+  const url = URL.createObjectURL(new Blob([lines.join("\n")], {type: "text/markdown;charset=utf-8"}));
+  const link = document.createElement("a"); link.href = url; link.download = "akim-scenario-report.md"; link.click(); URL.revokeObjectURL(url);
+  scenarioStatus.textContent = "Markdown-отчёт подготовлен для скачивания.";
+}
+function renderRecommendations(data) {
+  if (!data.recommendations || !data.recommendations.length) return;
+  const box = element("section", "recommendations");
+  box.append(element("h3", "", "Варианты улучшения"), element("p", "", "Одношаговые замены, найденные детерминированной моделью."));
+  const list = element("ul");
+  data.recommendations.forEach((entry) => list.append(element("li", "", "Score " + entry.score.toFixed(2) + ": " + entry.items.map((item) => item.measure_id + (item.district ? "→" + item.district : "")).join(", "))));
+  box.append(list); result.append(box);
 }
