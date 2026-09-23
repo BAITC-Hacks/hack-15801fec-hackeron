@@ -27,6 +27,8 @@ class WebApiTests(unittest.TestCase):
         self.assertAlmostEqual(response["score"], 56.54307, places=5)
         self.assertIn("Итог сценария", response["narrative"])
         self.assertEqual(len(response["districts"]), 5)
+        self.assertEqual(len(response["districts"][0]["indicators"]), 10)
+        self.assertEqual(response["districts"][0]["indicators"][0]["id"], "T1")
 
     def test_returns_validation_reasons_and_rejects_bad_shapes(self):
         response = score_payload({"items": []}, self.dataset)

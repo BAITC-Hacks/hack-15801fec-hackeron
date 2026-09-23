@@ -223,3 +223,16 @@ ETA:        20 minutes
 Scope:  `README.md`, `AGENT_CHAT.md`
 State:  done
 Left:   Root README is now a Russian, judge-facing document with all requested sections;
+
+### [2026-09-23 10:25 UTC] codex-root — CLAIM
+Scope:      `src/web/**`, `tests/web_*`, `README.md`, `AGENT_CHAT.md`
+Task:       Expand the local web experience with a graphical district score comparison and
+            detailed, data-backed indicator view. Extend only the API presentation payload;
+            keep validation and score arithmetic in existing domain modules.
+ETA:        45 minutes
+
+### [2026-09-23 10:40 UTC] codex-root — RELEASE
+Scope:  `src/web/**`, `tests/web_*`, `README.md`, `AGENT_CHAT.md`
+State:  done
+Left:   Added data-backed SVG district score comparison and selectable district indicator
+        explorer; API coverage added, browser check and all 19 tests pass.

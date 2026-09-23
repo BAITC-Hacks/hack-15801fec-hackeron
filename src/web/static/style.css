@@ -24,3 +24,25 @@ label { color:var(--muted); display:grid; font-size:12px; font-weight:700; gap:6
 .narrative { margin-top:20px; background:#eef4df; border-radius:10px; padding:17px; white-space:pre-line; font-size:14px; line-height:1.6; }
 .how { display:grid; grid-template-columns:.8fr 1.2fr; gap:38px; background:transparent; } .how-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:18px; } .how-grid p { color:var(--muted); font-size:14px; line-height:1.6; margin:0; } .how-grid b { color:var(--forest); font:500 18px "DM Mono",monospace; }
 @media (max-width:700px) { .shell { padding-top:38px; } .section-heading,.result-header { display:block; } .section-heading button { margin-top:18px; width:100%; } .decision { grid-template-columns:28px 1fr; } .decision label,.measure-meta { grid-column:2; } .number { grid-row:1; } .how { display:block; } .how-grid { margin-top:22px; grid-template-columns:1fr; } .stats { margin-top:20px; } }
+
+.visuals { margin-top:26px; padding-top:24px; border-top:1px solid var(--line); }
+.visual-title { margin:0 0 18px; font-size:22px; letter-spacing:-.04em; }
+.district-chart { margin:0; }
+.district-chart figcaption { font-size:14px; color:var(--muted); margin-bottom:10px; }
+.chart-legend { display:flex; gap:16px; font-size:12px; color:var(--muted); margin-bottom:9px; }
+.chart-legend span::before { content:""; display:inline-block; width:10px; height:10px; margin-right:6px; border-radius:2px; }
+.legend-before::before { background:#b8c1b8; } .legend-after::before { background:var(--forest); }
+.district-chart svg { display:block; width:100%; height:auto; overflow:visible; }
+.chart-axis { stroke:#aeb5aa; stroke-width:1; } .chart-grid { stroke:#e4e5dc; stroke-width:1; }
+.chart-label,.chart-value,.chart-tick { fill:var(--ink); font:12px Manrope,Arial,sans-serif; } .chart-tick { fill:var(--muted); }
+.chart-bar { rx:2; } .chart-before { fill:#b8c1b8; } .chart-after { fill:var(--forest); }
+.indicator-explorer { margin-top:24px; padding:18px; background:#f3f5ec; border-radius:12px; }
+.visual-heading { display:flex; justify-content:space-between; align-items:center; gap:18px; }
+.visual-heading h3 { margin:0; font-size:18px; } .visual-heading select { width:auto; min-width:150px; }
+.indicator-intro { color:var(--muted); font-size:13px; margin:14px 0 12px; }
+.indicator-list { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:10px 18px; }
+.indicator-row { display:grid; gap:5px; } .indicator-label { display:flex; justify-content:space-between; gap:10px; font:12px "DM Mono",monospace; }
+.indicator-label b { color:var(--forest); } .indicator-label span { color:var(--muted); } .indicator-label .positive { color:var(--forest); }
+.indicator-track { position:relative; height:8px; background:#d7ddd2; border-radius:8px; overflow:hidden; }
+.indicator-track i { position:absolute; left:0; top:0; height:100%; border-radius:8px; } .indicator-before { background:#aeb7ad; } .indicator-after { background:var(--forest); opacity:.82; }
+@media (max-width:700px) { .indicator-list { grid-template-columns:1fr; } .visual-heading { display:block; } .visual-heading select { width:100%; margin-top:12px; } .chart-value { display:none; } }

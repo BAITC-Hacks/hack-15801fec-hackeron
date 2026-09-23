@@ -72,6 +72,11 @@ def score_payload(payload: Mapping[str, Any], dataset: Dataset) -> dict[str, Any
                 "name": district.district_name,
                 "before": district.before,
                 "after": district.after,
+                "indicators": [
+                    {"id": delta.indicator, "before": delta.before, "after": delta.after,
+                     "delta": delta.delta}
+                    for delta in district.deltas
+                ],
                 "changes": [
                     {"indicator": delta.indicator, "delta": delta.delta}
                     for delta in district.deltas if delta.delta

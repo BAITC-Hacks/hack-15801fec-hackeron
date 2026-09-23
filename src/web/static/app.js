@@ -104,7 +104,7 @@ function renderResult(data) {
     const changes = district.changes.length ? district.changes.map((change) => `${change.indicator} ${change.delta >= 0 ? "+" : ""}${change.delta.toFixed(2)}`).join(" · ") : "Без изменений";
     card.append(element("p", "changes", changes)); grid.append(card);
   });
-  result.append(grid, element("div", "narrative", data.narrative));
+  result.append(grid); renderVisuals(result, data); result.append(element("div", "narrative", data.narrative));
   result.scrollIntoView({behavior: "smooth", block: "start"});
 }
 
@@ -128,3 +128,72 @@ async function init() {
   } catch (error) { showMessage([error.message]); }
 }
 init();
+
+function svgNode(tag, attributes = {}, text) {
+  const node = document.createElementNS("http://www.w3.org/2000/svg", tag);
+  Object.entries(attributes).forEach(([key, value]) => node.setAttribute(key, String(value)));
+  if (text !== undefined) node.textContent = text;
+  return node;
+}
+
+function renderVisuals(container, data) {
+  const section = element("section", "visuals");
+  section.append(element("p", "eyebrow", "ГРАФИЧЕСКИЙ ОБЗОР"));
+  section.append(element("h3", "visual-title", "Как сценарий меняет районы"));
+  section.append(buildDistrictChart(data.districts));
+  const explorer = element("div", "indicator-explorer");
+  const heading = element("div", "visual-heading");
+  heading.append(element("h3", "", "Показатели района"));
+  const picker = document.createElement("select");
+  picker.setAttribute("aria-label", "Выберите район для просмотра показателей");
+  data.districts.forEach((district) => picker.add(new Option(district.name, district.id)));
+  heading.append(picker);
+  const detail = element("div", "indicator-detail");
+  const redraw = () => renderIndicatorDetail(detail, data.districts.find((district) => district.id === picker.value));
+  picker.addEventListener("change", redraw);
+  redraw();
+  explorer.append(heading, detail);
+  section.append(explorer);
+  container.append(section);
+}
+
+function buildDistrictChart(districts) {
+  const figure = element("figure", "district-chart");
+  const caption = element("figcaption", "", "Районные оценки: до и после выбранного сценария");
+  const legend = element("div", "chart-legend");
+  legend.append(element("span", "legend-before", "До"), element("span", "legend-after", "После"));
+  const svg = svgNode("svg", {viewBox: "0 0 760 250", role: "img", "aria-label": "Сравнение районных оценок до и после сценария"});
+  svg.append(svgNode("line", {x1: 138, y1: 25, x2: 138, y2: 224, class: "chart-axis"}));
+  [0, 25, 50, 75, 100].forEach((value) => {
+    const x = 138 + value * 5.6;
+    svg.append(svgNode("line", {x1: x, y1: 25, x2: x, y2: 224, class: "chart-grid"}));
+    svg.append(svgNode("text", {x, y: 242, class: "chart-tick", "text-anchor": "middle"}, value));
+  });
+  districts.forEach((district, index) => {
+    const y = 33 + index * 38;
+    svg.append(svgNode("text", {x: 128, y: y + 15, class: "chart-label", "text-anchor": "end"}, district.name));
+    svg.append(svgNode("rect", {x: 138, y, width: district.before * 5.6, height: 12, class: "chart-bar chart-before"}));
+    svg.append(svgNode("rect", {x: 138, y: y + 15, width: district.after * 5.6, height: 12, class: "chart-bar chart-after"}));
+    svg.append(svgNode("text", {x: 704, y: y + 20, class: "chart-value"}, `${district.before.toFixed(1)} → ${district.after.toFixed(1)}`));
+  });
+  figure.append(caption, legend, svg);
+  return figure;
+}
+
+function renderIndicatorDetail(target, district) {
+  target.replaceChildren();
+  const intro = element("p", "indicator-intro", `${district.name}: шкала 0–100, больше — лучше.`);
+  const list = element("div", "indicator-list");
+  district.indicators.forEach((indicator) => {
+    const row = element("div", "indicator-row");
+    const label = element("div", "indicator-label");
+    label.append(element("b", "", indicator.id), element("span", indicator.delta ? "positive" : "", `${indicator.before.toFixed(1)} → ${indicator.after.toFixed(1)}`));
+    const track = element("div", "indicator-track");
+    const before = element("i", "indicator-before"); before.style.width = `${indicator.before}%`;
+    const after = element("i", "indicator-after"); after.style.width = `${indicator.after}%`;
+    track.append(before, after);
+    row.append(label, track);
+    list.append(row);
+  });
+  target.append(intro, list);
+}
