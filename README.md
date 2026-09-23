@@ -1,156 +1,154 @@
-# «Аким на 5 часов» — симулятор городских решений
+# «Аким на 5 часов» — AI-симулятор городских решений
 
-Dependency-free Python simulator for the Hackeron task. A user allocates one virtual
-budget among **exactly five** city initiatives and receives an auditable **Astana
-Quality of Life Score**: city-wide performance, the weakest district, and unresolved
-critical indicators all affect the result.
+## О проекте
 
-The simulator deliberately separates responsibilities:
+«Аким на 5 часов» — локальный симулятор для задачи Hackeron. Он помогает городскому управленцу, аналитику или участнику команды проверить последствия распределения ограниченного виртуального бюджета между инициативами по транспорту, экологии, социальной инфраструктуре, безопасности и городским сервисам.
 
-- rules and scoring are deterministic, local, and testable;
-- the terminal and web UIs only collect and render decisions—they never recalculate results;
-- the AI explanation layer receives the supplied `ScoreResult` audit trail without
-  inventing numbers; it has an offline fact-grounded fallback and an injectable LLM adapter.
+Пользователь выбирает ровно пять мероприятий для условных районов Астаны. Система проверяет ограничения, детерминированно рассчитывает **Astana Quality of Life Score** и показывает, как изменились показатели каждого района. Это делает компромиссы сценария прозрачными: учитываются и средний результат по городу, и самый слабый район, и критические показатели.
 
-## Quick start
+## Что реализовано
 
-Requires Python 3.10+; no packages, API keys, or network access are needed.
+- Локальный веб-интерфейс на русском языке: пять карточек решений, выбор района для районных мер, текущий бюджет и кнопка расчёта.
+- Каталог из 14 мероприятий и синтетические исходные данные для 5 районов.
+- Проверка правил до расчёта:
+  - бюджет не выше 100;
+  - ровно 5 решений;
+  - без повторов мероприятий;
+  - район обязателен для районной меры и не допускается для городской;
+  - не более двух мер одного направления;
+  - контроль несовместимых пар.
+- Детерминированный расчёт Astana Quality of Life Score с лагами, синергиями, ограничением шкалы 0–100 и штрафом за критические показатели.
+- Результат с бюджетом, итоговым Score, изменением относительно базового сценария, средним по городу, слабейшим районом и изменениями по каждому району.
+- Локальное фактологическое объяснение результата на русском языке. Для внешней LLM предусмотрен внедряемый адаптер, но готовая интеграция с провайдером в репозитории отсутствует.
+- Терминальный интерфейс и необязательный модуль исчерпывающего ранжирования допустимых сценариев.
+- Автоматические тесты модели, CLI, API, объяснений и ранжирования.
+
+## Как работает решение
+
+1. В браузере пользователь выбирает пять мероприятий и при необходимости район.
+2. Интерфейс показывает суммарную стоимость и остаток от бюджета.
+3. После нажатия «Рассчитать сценарий» браузер передаёт только выбранные идентификаторы в локальный JSON API.
+4. Валидатор проверяет набор. Если есть нарушение, Score не рассчитывается и выводятся причины.
+5. Для допустимого набора движок применяет эффекты с учётом лага и синергий, затем вычисляет районные оценки, среднее по городу, минимум района, число критических значений и итоговый Score.
+6. Веб-интерфейс отображает аудит результата по районам и фактологическое текстовое объяснение, сформированное из уже рассчитанных чисел.
+
+## Технологии
+
+| Область | Использовано |
+| --- | --- |
+| Язык | Python 3.10+ |
+| Веб-сервер и API | Стандартная библиотека Python: `http.server`, `json` |
+| Клиент | HTML, CSS, JavaScript без сторонних библиотек |
+| Данные | Локальные JSON-файлы |
+| Тестирование | `unittest` из стандартной библиотеки |
+| AI-слой | Локальное фактологическое объяснение; опциональный интерфейс адаптера для LLM |
+| Внешние API/сервисы | Не используются |
+
+Проект не требует установки пакетов, ключей API или сетевого доступа для запуска основной версии.
+
+## Архитектура
+
+```text
+data/*.json
+    │
+    ▼
+src/data ──► src/validator ──► src/engine ──► src/ai
+                                  │               │
+                                  └────► src/web ◄┘
+                                            │
+                                     браузер / JSON API
+
+src/solver ──► validator + engine
+src/app    ──► validator + engine + ai
+```
+
+- `data/` — исходные синтетические данные: районы, мероприятия, веса, правила, синергии и несовместимости.
+- `src/data/` — загрузка JSON и проверка структуры набора.
+- `src/validator/` — чистая проверка пользовательского набора решений.
+- `src/engine/` — чистый расчёт Score и полный журнал расчётных изменений.
+- `src/ai/` — объяснение только по готовому `ScoreResult`; арифметику не выполняет.
+- `src/web/` — локальный HTTP-сервер, JSON API и статический интерфейс; не дублирует правила или расчёты.
+- `src/app/` — альтернативный CLI.
+- `src/solver/` — необязательное ранжирование допустимых сценариев.
+- `tests/` — тесты правил, расчёта, API, интерфейсов, объяснения и ранжирования.
+
+## Установка и запуск
+
+Требование: Python 3.10 или новее.
 
 ```bash
 git clone https://github.com/BAITC-Hacks/hack-15801fec-hackeron.git
 cd hack-15801fec-hackeron
-python -m src.web
+python3 -m src.web
 ```
 
-Open **http://127.0.0.1:8000** in a browser. If that port is occupied, choose another:
+Откройте в браузере: [http://127.0.0.1:8000](http://127.0.0.1:8000).
+
+Если порт занят:
 
 ```bash
-python -m src.web --port 8765
+python3 -m src.web --port 8765
 ```
 
-The local web UI provides five decision cards, a live budget meter, validation
-feedback, score/district visualisation, and fact-grounded Russian analysis. It calls
-only the bundled JSON API and works without packages or external services.
+Тогда интерфейс будет доступен по адресу [http://127.0.0.1:8765](http://127.0.0.1:8765).
 
-The terminal interface remains available with `python -m src.app`. It prints the
-catalogue and accepts five entries:
-
-- district initiative: `M7:nura`
-- city-wide initiative: `M12`
-
-District IDs are `esil`, `almaty`, `saryarka`, `baikonur`, and `nura`. IDs are
-case-insensitive. The UI shows a running cost, then either validation errors or the
-score and the change in every affected district.
-
-### Reproducible reference walkthrough
-
-Enter these five lines when prompted:
-
-```text
-M7:nura
-M8:nura
-M10:nura
-M12
-M5:saryarka
-```
-
-This is the valid reference scenario from the brief. It costs **95/100** and produces:
-
-```text
-Astana Quality of Life Score: 56.54 (+3.99 к базе)
-Среднее по городу: 58.08; слабейший район: 52.96; критических значений: 0
-```
-
-The small difference between 56.54 and the brief's `≈ 56.5` is only displayed
-precision. The exact computed value is 56.54307.
-
-## Verify
-
-Run all unit and golden tests:
+Также доступен CLI:
 
 ```bash
-PYTHONDONTWRITEBYTECODE=1 python -m unittest discover -s tests -p '*_test.py' -v
+python3 -m src.app
 ```
 
-Tests verify the source baseline (**52.55768**, shown as 52.56), the reference set,
-lag scaling, non-lag-scaled synergy, score order-independence, invalid-set behaviour,
-CLI parsing/rendering, and the web JSON API.
+## Как проверить решение
 
-## Rules modelled
+### Проверка в веб-интерфейсе
 
-A set is rejected if it violates any source rule:
+Выберите следующие пять мер:
 
-1. cost exceeds 100;
-2. it does not contain exactly five decisions;
-3. a measure is repeated;
-4. a district measure has no valid district, or a city measure has one;
-5. more than two measures share a direction;
-6. it contains an incompatible pair (`M1/M3`, `M4/M7` in one district, or `M5/M13` in one district).
+| Мера | Район |
+| --- | --- |
+| M7 — Школа + детсад | Нура |
+| M8 — Центр семейного здоровья / поликлиника | Нура |
+| M10 — Освещение и камеры | Нура |
+| M12 — Единая цифровая платформа обращений | город |
+| M5 — Чистое топливо | Сарыарка |
 
-An invalid set has no score—not a score of zero—and receives all applicable reasons.
+Ожидаемый результат из текущей модели:
 
-For a valid set, each full measure effect is multiplied by `(8 − lag) / 8`; effects
-are clipped to 0…100. Fixed bonuses for `M1+M2`, `M10+M12`, and `M5+M6` are applied
-without lag scaling. The engine then calculates:
+- бюджет: **95 / 100**;
+- Score: **56.54**;
+- изменение к базовому сценарию: **+3.99**;
+- критических значений: **0**.
 
-```text
-D_d   = Σ(weight[indicator] × indicator_after)
-D_avg = Σ(population_share[district] × D_d)
-Score = 0.7 × D_avg + 0.3 × min(D_d) − N_crit
+Это соответствует примеру из задания, где ожидается Score около 56.5.
+
+### Автоматическая проверка
+
+```bash
+PYTHONDONTWRITEBYTECODE=1 python3 -m unittest discover -s tests -p '*_test.py' -v
 ```
 
-`N_crit` is the number of district–indicator pairs strictly below 40 after all
-effects. All weights, lags, costs, synergies, and constraints live in data files, not
-in UI code.
+Тесты проверяют базовый Score, эталонный набор, лаги, синергии, независимость от порядка мер, обработку недопустимых наборов, CLI, JSON API, объяснения и ранжирование.
 
-## Project layout
+## Данные и интеграции
 
-```text
-data/                  source-traceable districts, measures, and scoring rules
-src/data/              dependency-free JSON loader and typed dataset
-src/validator/         selection-rule validation
-src/engine/            pure score calculation and result audit trail
-src/solver/            optional exhaustive valid-scenario ranking
-src/app/               Russian CLI (`python -m src.app`)
-src/web/               local web UI and JSON API (`python -m src.web`)
-tests/                 validator, scoring, and UI tests
-INSTRUCTIONS.md        merged, readable hackathon brief and complete source tables
-task/original/         immutable original .docx documents
-task/txt/              source document text conversions
-DOCUMENTATION.md       source provenance, checksums, and conversion notes
-```
+Все данные лежат в репозитории и не загружаются из внешних источников во время работы:
 
-## Data provenance and extensibility
+- `data/districts.json` — 5 районов, доли населения и 10 показателей.
+- `data/measures.json` — 14 мероприятий, стоимость, лаг и эффекты.
+- `data/rules.json` — бюджет, веса, горизонт, критический порог, синергии и несовместимости.
 
-Every machine-readable value in `data/` is transcribed from Part II of
-[`INSTRUCTIONS.md`](INSTRUCTIONS.md). The original documents and their checksums are
-documented in [`DOCUMENTATION.md`](DOCUMENTATION.md). `load_dataset()` validates the
-expected number of districts, measures, indicators, population total, and effect
-keys before returning immutable dataclasses.
+Числа транскрибированы из части II [INSTRUCTIONS.md](INSTRUCTIONS.md). Исходные документы сохранены в `task/original/`, текстовые версии — в `task/txt/`; происхождение и контрольные суммы описаны в [DOCUMENTATION.md](DOCUMENTATION.md).
 
-`src.engine.ScoreResult` is a complete calculation audit: per-district before/after
-scores, per-indicator deltas, budget, aggregate metrics, critical count, final score,
-and each lag-scaled effect or synergy. `src.ai.explain()` renders a local
-fact-grounded Russian narrative by default; pass a callable or a provider adapter with
-`complete(prompt)` to use an LLM. The generated prompt contains only these computed
-facts and explicitly forbids arithmetic or invented numbers.
+В текущей версии внешних API, облачных сервисов, баз данных и развёрнутой LLM-интеграции нет.
 
-## Optional scenario ranking
+## Ограничения текущей версии
 
-The solver evaluates every valid five-decision scenario with the canonical validator
-and compact engine path, then constructs full audit results only for the leaders. It
-is intentionally exhaustive and may take tens of seconds on a typical laptop:
+- Веб-интерфейс запускается локально; публичной deployed-версии в репозитории не указано.
+- Объяснение по умолчанию локальное и фактологическое, а не ответ от подключённой LLM.
+- Интерфейс показывает изменения показателей и районных баллов, но не содержит сравнения нескольких команд, моделирования неожиданных событий или генерации презентации.
+- Ранжирование сценариев исчерпывающее и может выполняться десятки секунд.
+- Датасет синтетический и предназначен для хакатонной демонстрации, а не для управления реальным городом.
 
-```python
-from src.data import load_dataset
-from src.solver import rank_scenarios
+## Ссылка на deployed-версию
 
-for scenario in rank_scenarios(load_dataset(), limit=3):
-    print(scenario.result.score, scenario.selection)
-```
-
-## Current scope
-
-The deterministic simulator, fact-grounded analysis, playable CLI, local web UI, and
-optional scenario ranker are ready. Next planned enhancements are a provider-specific
-LLM adapter and richer visualisation.
+Публичная развёрнутая версия в текущем репозитории не найдена. Для демонстрации используйте локальный запуск по инструкции выше.

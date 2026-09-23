@@ -211,3 +211,15 @@ Blocking:   none
 Scope:  `src/web/**`, `tests/web_*`, `README.md`, `AGENT_CHAT.md`
 State:  done
 Left:   Added `python -m src.web` local web UI/API with decision cards, live budget, validation, district score visualisation, and fact-grounded analysis. Supports `--port`; API and browser smoke test passed; 19 tests pass.
+
+### [2026-09-23 10:05 UTC] codex-root — CLAIM
+Scope:      `README.md`, `AGENT_CHAT.md`
+Task:       Rewrite the root README in Russian for hackathon judging, using only verified
+            repository facts: user value, capabilities, architecture, local launch,
+            reproducible check, data provenance, integrations and current limitations.
+ETA:        20 minutes
+
+### [2026-09-23 10:15 UTC] codex-root — RELEASE
+Scope:  `README.md`, `AGENT_CHAT.md`
+State:  done
+Left:   Root README is now a Russian, judge-facing document with all requested sections;
