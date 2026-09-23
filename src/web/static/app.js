@@ -256,3 +256,24 @@ function applyLanguage() {
 language.value = localStorage.getItem("akim-language") || "ru";
 language.addEventListener("change", applyLanguage);
 applyLanguage();
+
+const fullCopy = {
+ ru: {budget:"Бюджет сценария", team:"Команда", demo:"Демо-сценарий", event:"Городское событие", save:"Сохранить сценарий", report:"Экспортировать отчёт", measure:"Мероприятие", district:"Район", noMeasure:"Выберите меру", noDistrict:"Выберите район", select:"Выберите мероприятие, чтобы увидеть стоимость и эффект.", status:"Выберите пять мероприятий.", instructions:["Бюджет, совместимость и направления проверяются до расчёта.","Эффекты учитывают лаг реализации и синергии.","Итог защищает не только средний результат, но и слабейший район."]},
+ kk: {budget:"Сценарий бюджеті", team:"Команда", demo:"Демо-сценарий", event:"Қалалық оқиға", save:"Сценарийді сақтау", report:"Есепті экспорттау", measure:"Іс-шара", district:"Аудан", noMeasure:"Іс-шараны таңдаңыз", noDistrict:"Ауданды таңдаңыз", select:"Құнын және әсерін көру үшін іс-шараны таңдаңыз.", status:"Бес іс-шараны таңдаңыз.", instructions:["Бюджет, үйлесімділік және бағыттар есептеуге дейін тексеріледі.","Әсерлер іске асыру кідірісі мен синергияны ескереді.","Қорытынды тек орташа нәтижені емес, ең әлсіз ауданды да қорғайды."]},
+ en: {budget:"Scenario budget", team:"Team", demo:"Demo scenario", event:"City event", save:"Save scenario", report:"Export report", measure:"Measure", district:"District", noMeasure:"Choose a measure", noDistrict:"Choose a district", select:"Choose a measure to see its cost and effect.", status:"Choose five measures.", instructions:["Budget, compatibility and directions are validated before calculation.","Effects include implementation lag and synergies.","The final score protects the weakest district as well as the city average."]}
+};
+function fullyLocalize() {
+  const copy = fullCopy[language.value];
+  document.querySelector(".budget-card span").textContent = copy.budget;
+  const labels = document.querySelectorAll(".scenario-tools label");
+  labels[0].childNodes[0].nodeValue = copy.team; labels[1].childNodes[0].nodeValue = copy.demo; labels[2].childNodes[0].nodeValue = copy.event;
+  saveScenarioButton.textContent = copy.save; exportReportButton.textContent = copy.report;
+  document.querySelector(".budget-card p").textContent = copy.status;
+  document.querySelectorAll(".how-grid p").forEach((node, i) => { node.lastChild.nodeValue = " " + copy.instructions[i]; });
+  document.querySelectorAll(".decision").forEach((row) => {
+    const labels = row.querySelectorAll("label"); if (labels.length) { labels[0].childNodes[0].nodeValue = copy.measure; labels[1].childNodes[0].nodeValue = copy.district; }
+    const meta = row.querySelector(".measure-meta"); if (meta && !row.querySelector(".measure").value) meta.textContent = copy.select;
+  });
+}
+language.addEventListener("change", fullyLocalize);
+setTimeout(fullyLocalize, 0);
