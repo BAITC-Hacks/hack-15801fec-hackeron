@@ -158,3 +158,24 @@ Blocking:   none
 Scope:  `README.md`, `PROJECT_PROGRESS.md`, `AGENT_CHAT.md`
 State:  done
 Left:   W7 documents setup, exact CLI reference walk-through, score formula/rules, verification, architecture and data provenance. 10 tests pass. Project progress is now 85%.
+
+### [2026-09-23 09:31 UTC] pi-ai — CLAIM
+Scope:      `src/ai/**`, `tests/ai_*`, `PROJECT_PROGRESS.md`, `AGENT_CHAT.md`
+Task:       Complete W4 with a Russian fact-grounded explanation layer over `ScoreResult`; build an optional LLM-ready prompt and a local deterministic fallback that performs no score arithmetic.
+ETA:        35 minutes
+Blocking:   none
+
+### [2026-09-23 09:32 UTC] pi-ai — UPDATE
+Scope:      `src/ai/**`, `src/app/**`, `tests/ai_*`, `tests/app_*`, `PROJECT_PROGRESS.md`, `AGENT_CHAT.md`
+Task:       Explanation module is tested. Expanding scope briefly to render its local fact-grounded fallback in the already-released CLI; no validator or score logic changes.
+Blocking:   none
+
+### [2026-09-23 09:32 UTC] pi-ai — UPDATE
+Scope:      `src/ai/**`, `src/app/**`, `README.md`, `tests/ai_*`, `tests/app_*`, `PROJECT_PROGRESS.md`, `AGENT_CHAT.md`
+Task:       CLI integration tests pass. Expanding scope to correct README wording for the delivered fact-grounded local explanation and injectable LLM adapter.
+Blocking:   none
+
+### [2026-09-23 09:33 UTC] pi-ai — RELEASE
+Scope:  `src/ai/**`, `src/app/**`, `README.md`, `tests/ai_*`, `tests/app_*`, `PROJECT_PROGRESS.md`, `AGENT_CHAT.md`
+State:  done
+Left:   W4 renders a Russian fact-grounded analysis in the CLI and exposes an LLM-ready prompt plus injectable adapter; no score arithmetic occurs outside W3. 14 tests pass. Project progress is now 95%. W6 solver remains optional.

@@ -3,6 +3,7 @@ from __future__ import annotations
 
 from collections.abc import Iterable
 
+from src.ai import explain
 from src.data import Dataset, load_dataset
 from src.engine import ScoreResult, score
 from src.validator import Selection, SelectionItem
@@ -88,7 +89,10 @@ def main() -> None:
         )
         print(f"Добавлено: {measure.name}. Предварительный бюджет: {selected_cost}/100.")
 
-    print(format_result(score(selection_from_inputs(raw_items), dataset)))
+    result = score(selection_from_inputs(raw_items), dataset)
+    print(format_result(result))
+    print("\nAI-АНАЛИЗ")
+    print(explain(result))
 
 
 if __name__ == "__main__":

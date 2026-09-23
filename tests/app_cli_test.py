@@ -1,6 +1,9 @@
 import unittest
 
+from unittest.mock import patch
+
 from src.app import format_catalogue, format_result, parse_selection_item, selection_from_inputs
+from src.app.cli import main
 from src.data import load_dataset
 from src.engine import score
 
@@ -32,6 +35,15 @@ class CliTests(unittest.TestCase):
         invalid = format_result(score(selection_from_inputs(["M3:nura"] * 5), self.dataset))
         self.assertIn("Набор не принят", invalid)
         self.assertIn("Повторы", invalid)
+
+    def test_main_renders_fact_grounded_analysis(self):
+        entries = ["M7:nura", "M8:nura", "M10:nura", "M12", "M5:saryarka"]
+        with patch("builtins.input", side_effect=entries), patch("builtins.print") as printed:
+            main()
+        output = "\n".join(" ".join(map(str, call.args)) for call in printed.call_args_list)
+        self.assertIn("AI-АНАЛИЗ", output)
+        self.assertIn("Итог сценария", output)
+        self.assertIn("56.54", output)
 
 
 if __name__ == "__main__":

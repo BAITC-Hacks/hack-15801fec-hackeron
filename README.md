@@ -9,8 +9,8 @@ The simulator deliberately separates responsibilities:
 
 - rules and scoring are deterministic, local, and testable;
 - the terminal UI only collects and renders decisions—it never recalculates results;
-- an AI explanation layer can consume the supplied `ScoreResult` audit trail without
-  inventing numbers (planned next step).
+- the AI explanation layer receives the supplied `ScoreResult` audit trail without
+  inventing numbers; it has an offline fact-grounded fallback and an injectable LLM adapter.
 
 ## Quick start
 
@@ -118,11 +118,13 @@ keys before returning immutable dataclasses.
 
 `src.engine.ScoreResult` is a complete calculation audit: per-district before/after
 scores, per-indicator deltas, budget, aggregate metrics, critical count, final score,
-and each lag-scaled effect or synergy. A future LLM interface can explain these facts
-in Russian, compare scenarios, and suggest trade-offs without performing its own
-arithmetic.
+and each lag-scaled effect or synergy. `src.ai.explain()` renders a local
+fact-grounded Russian narrative by default; pass a callable or a provider adapter with
+`complete(prompt)` to use an LLM. The generated prompt contains only these computed
+facts and explicitly forbids arithmetic or invented numbers.
 
 ## Current scope
 
-The deterministic simulator and playable CLI are ready. Next planned enhancements are
-the AI narrative layer, a valid-scenario ranking helper, and richer visualisation.
+The deterministic simulator, fact-grounded analysis, and playable CLI are ready. Next
+planned enhancements are a provider-specific LLM adapter, a valid-scenario ranking
+helper, and richer visualisation.
