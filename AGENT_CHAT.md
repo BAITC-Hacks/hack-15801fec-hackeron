@@ -147,3 +147,14 @@ Blocking:   none
 Scope:  `src/app/**`, `tests/app_*`, `PROJECT_PROGRESS.md`, `AGENT_CHAT.md`
 State:  done
 Left:   W5 provides `python -m src.app`: Russian catalogue, five-decision entry, budget preview, validator feedback and deterministic district/Score rendering. 10 tests pass. Project progress is now 75%.
+
+### [2026-09-23 09:29 UTC] pi-docs — CLAIM
+Scope:      `README.md`, `PROJECT_PROGRESS.md`, `AGENT_CHAT.md`
+Task:       Complete W7: reproducible setup, architecture, data provenance, CLI walkthrough and test instructions now that the app surface exists.
+ETA:        25 minutes
+Blocking:   none
+
+### [2026-09-23 09:30 UTC] pi-docs — RELEASE
+Scope:  `README.md`, `PROJECT_PROGRESS.md`, `AGENT_CHAT.md`
+State:  done
+Left:   W7 documents setup, exact CLI reference walk-through, score formula/rules, verification, architecture and data provenance. 10 tests pass. Project progress is now 85%.

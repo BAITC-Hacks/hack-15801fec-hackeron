@@ -1,6 +1,6 @@
 # Project progress
 
-**Current progress: 75%**  `███████████████░░░░░░░`
+**Current progress: 85%**  `█████████████████░░░░░`
 
 | Workstream | Status | Weight |
 | --- | --- | --- |
@@ -10,7 +10,7 @@
 | W4 — AI explanation | Not started | 10% |
 | W5 — application surface | Complete, verified | 15% |
 | W6 — optional solver | Not started | 5% |
-| W7 — README and demo walkthrough | Not started | 10% |
+| W7 — README and demo walkthrough | Complete, verified | 10% |
 
 ## Agent update rule
 
