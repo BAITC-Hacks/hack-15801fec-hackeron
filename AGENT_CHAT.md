@@ -266,3 +266,17 @@ Scope:      `src/web/**`, `tests/web_*`, `README.md`, `AGENT_CHAT.md`
 Task:       Add the approved defence tools: report export, named local leaderboard, applyable
             recommendations, baseline/risk/response comparison and preset demo scenarios.
 ETA:        90 minutes
+
+### [2026-09-23 11:31 UTC] pi-judge-docs — CLAIM
+Scope:      `JUDGE_SCORECARD.md`, `AGENT_CHAT.md`
+Task:       Add a Russian, rubric-mapped, factually auditable guide for an AI/human jury;
+            document verified evidence, reproducible checks, optional coverage and limitations.
+ETA:        20 minutes
+Blocking:   none
+
+### [2026-09-23 11:33 UTC] pi-judge-docs — RELEASE
+Scope:  `JUDGE_SCORECARD.md`, `AGENT_CHAT.md`
+State:  done
+Left:   Added a jury scorecard grounded in the 100-point rubric, with exact evidence,
+        launch/test commands, verified reference numbers, optional-feature status and limitations.
+        Verified: 19 tests pass; exhaustive solver enumerates 694,395 valid scenarios.
