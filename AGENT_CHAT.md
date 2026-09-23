@@ -280,3 +280,52 @@ State:  done
 Left:   Added a jury scorecard grounded in the 100-point rubric, with exact evidence,
         launch/test commands, verified reference numbers, optional-feature status and limitations.
         Verified: 19 tests pass; exhaustive solver enumerates 694,395 valid scenarios.
+### [2026-09-23 09:04 UTC] codex — CLAIM
+Scope:      `src/validator/**`, `tests/validator_*`
+Task:       Implement W2 selection validation against the pinned W1 loader: all eight rules, stable result contract, and focused tests.
+ETA:        35 minutes
+Blocking:   none
+
+### [2026-09-23 09:10 UTC] codex — RELEASE
+Scope:      `src/validator/**`, `tests/validator_*`
+State:      done (local, pending a configured Git author for commit)
+Left:       `src.validator.validate()` accepts `Selection`/`SelectionItem` (or mapping items) and returns `ValidationResult`. It enforces exact count, budget, repeats, district use, direction cap, incompatibilities, and order independence. `tests/validator_test.py`: 8 passing tests.
+
+### [2026-09-23 09:10 UTC] codex — CLAIM
+Scope:      `src/engine/**`, `tests/engine_*`
+Task:       Implement W3 deterministic scoring over valid selections, including lag, synergies, clipping, district/city scores, critical penalty, and golden cases.
+ETA:        45 minutes
+Blocking:   none
+
+### [2026-09-23 09:17 UTC] codex — RELEASE
+Scope:      `src/engine/**`, `tests/engine_*`
+State:      done (local, pending a configured Git author for commit)
+Left:       `src.engine.score()` returns no score for invalid selections and otherwise applies lag scaling, synergies, clipping, weighted district/city scoring, weakest-district weighting, and the strict critical-value penalty. 12 combined validator/engine tests pass; baseline is 52.56 and the supplied reference selection is ≈56.5 at cost 95.
+
+### [2026-09-23 09:17 UTC] codex — CLAIM
+Scope:      `src/ai/**`, `tests/ai_*`
+Task:       Implement W4 Russian scenario explanation from computed `ScoreResult` only, with strengths, risks, and evidence-backed recommendations.
+ETA:        25 minutes
+Blocking:   none
+
+### [2026-09-23 09:22 UTC] codex — RELEASE
+Scope:      `src/ai/**`, `tests/ai_*`
+State:      done (local, pending a configured Git author for commit)
+Left:       `src.ai.explain()` produces Russian score narratives from `ScoreResult` only: score/budget, strongest indicator changes, critical risks, and a recommendation. It explains invalid selections rather than assigning a score. All 14 W2–W4 tests pass.
+
+### [2026-09-23 09:11 UTC] app-cli — CLAIM
+Scope:      `src/app/**`, `tests/app_*`
+Task:       Implement W5: a thin Russian CLI that collects five decisions and delegates validation, scoring, and narrative generation to the existing layers.
+ETA:        30 minutes
+Blocking:   shared W2–W4 changes are uncommitted, so `git pull --rebase` could not run without risking their work.
+
+### [2026-09-23 09:13 UTC] app-cli — RELEASE
+Scope:      `src/app/**`, `tests/app_*`
+State:      done (local, uncommitted)
+Left:       `python3 -m src.app` presents the five-decision Russian flow, reports validator reasons for invalid sets, and uses engine + AI output for valid ones. `tests/app_test.py` passes (2 tests); a manual reference-scenario run yields 56.54 at cost 95. The full suite began passing unrelated solver tests but one solver ranking test exceeded the 30-second command window.
+
+### [2026-09-23 09:11 UTC] solver — CLAIM
+Scope:      `src/solver/**`, `tests/solver_*`
+Task:       Implement W6 deterministic valid five-measure enumeration and score ranking using validator and engine contracts.
+ETA:        30 minutes
+Blocking:   `git pull --rebase` is temporarily blocked by shared uncommitted W2–W4 changes; using their current workspace state as instructed.
