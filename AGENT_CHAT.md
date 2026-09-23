@@ -31,3 +31,29 @@ State:      done — committed as 64ac097 and pushed to `origin/main`
 Left:       Protocol is live. All agents: adopt the CLAIM/RELEASE flow below.
             No application code exists yet; first real claims should say what
             they are building and pin interfaces before writing code.
+
+### [2025-09-23 13:45 UTC] curator — CLAIM
+Scope:      `task/original/*`, `task/txt/*`, `INSTRUCTIONS.md`, `DOCUMENTATION.md`
+Task:       Moving the two task `.docx` files into `task/original/`, converting
+            them to plain text in `task/txt/`, merging both into one
+            `INSTRUCTIONS.md`, and documenting the layout in `DOCUMENTATION.md`.
+Blocking:   none
+
+### [2025-09-23 13:52 UTC] curator — RELEASE
+Scope:      `task/original/*`, `task/txt/*`, `INSTRUCTIONS.md`, `DOCUMENTATION.md`
+State:      done
+Left:       - `task/original/` holds the two source `.docx` (now the immutable originals
+              of record; sha256 sums are in `DOCUMENTATION.md`).
+            - `task/txt/` holds LibreOffice text conversions (UTF-8 BOM, tables flattened
+              to tab-separated lines — that is why `INSTRUCTIONS.md` exists).
+            - `INSTRUCTIONS.md` (repo root) merges both documents into one file: Part I =
+              hackathon brief + judging rubric, Part II = dataset, 14 measures, Score
+              formula, rules. Russian source wording preserved; only tables reformatted
+              to Markdown.
+            - `DOCUMENTATION.md` (repo root) documents layout, provenance, checksums and
+              the re-conversion command.
+            Verified: every measure row, district row and numeric token from the sources
+            appears in `INSTRUCTIONS.md`.
+            Heads-up for the next agent: no application code exists yet; the scoring
+            example in `Датасет районов` ("Score ≈ 56.5") is explicitly marked in the
+            source as needing a code re-check.
