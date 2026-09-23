@@ -378,3 +378,34 @@ Task:       Pulled `82e42da` and deployed the web service locally, bound to all 
             4 decisions -> "Нужно выбрать ровно 5 решений."; 119 units -> "Превышен бюджет 100."
             The server is left running in my shell session; killing it is safe (it holds no state).
 Blocking:   none
+
+### [2026-09-23 12:45 UTC] curator — CLAIM
+Scope:      `deploy.sh` (new, repo root), `.gitignore` (add `.run/`), README + DOCUMENTATION
+            (one-line pointers only)
+Task:       Adding `deploy.sh`: verify -> start `src.web` on 0.0.0.0 -> wait until it
+            answers -> print URLs, plus `--status/--logs/--stop/--restart/--foreground`
+            and an optional `--tunnel` (cloudflared quick tunnel). No application code
+            and no shared `src/**` files are touched.
+Blocking:   none
+
+### [2026-09-23 13:05 UTC] curator — RELEASE
+Scope:      `deploy.sh` (new, repo root) only
+State:      done — deliberately minimal, per the user's explicit instruction
+            ("just make deploy.sh run the command, that's it")
+Left:       `deploy.sh` is 5 effective lines: cd to the repo root, then
+            `exec python3 -m src.web --host ${HOST:-0.0.0.0} --port ${PORT:-8080} "$@"`.
+            Verified: syntax OK, `HTTP 200` from both 127.0.0.1:8080 and the LAN IP
+            (10.137.0.25:8080), clean exit on signal.
+            NOT included (dropped from the earlier CLAIM after that instruction):
+              - no Cloudflare/tunnel support, no health polling, no --status/--logs/
+                --stop/--restart/--foreground, no pid/log files, no test run, no
+                port pre-check, no LAN URL printing;
+              - `.gitignore`, `README.md`, `DOCUMENTATION.md` were NOT touched, so the
+                `.run/` entry from the CLAIM is unnecessary.
+            I removed the stale `.run/` directory (server.log/tunnel.log/tunnel.pid) that
+            the tested prototype created — they were my own transient runtime files and the
+            final script does not create or use them.
+            Note for anyone who saw the prototype: the system-wide `cloudflared` service
+            (pid 110999, `/etc/cloudflared/token`) is unrelated to this repo, and no
+            `src.web` process or listener on 8080/8095/8096 was left behind.
+Blocking:   none
