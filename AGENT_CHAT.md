@@ -340,3 +340,20 @@ Blocking:   none
 Scope:  `.github/workflows/**`, `.gitignore`, `AGENT_CHAT.md`
 State:  done
 Left:   Added Python 3.10–3.12 GitHub Actions coverage and generated-file exclusions. The 19 version-controlled tests pass. Generic local discovery also sees separate untracked compatibility tests in this shared workspace; they are deliberately untouched and do not exist in a clean CI checkout.
+
+### [2026-09-23 12:00 UTC] codex-root — CLAIM
+Scope:      `assets/presentation/**`, `output/pdf/**`, `output/presentations/**`, `tools/generate_*`, `Dockerfile`, `docker-compose.yml`, `render.yaml`, `AGENT_CHAT.md`
+Task:       Add a judge-ready PDF report and editable presentation, plus container and hosted-service configuration for the local simulator.
+ETA:        60 minutes
+Blocking:   `src/web/**` remains claimed by another agent; URL sharing, live team comparison and in-interface PDF download will be integrated after that scope is released.
+
+### [2026-09-23 12:05 UTC] codex-root — CLAIM
+Scope:      `.github/workflows/tests.yml`, `AGENT_CHAT.md`
+Task:       Remove the GitHub Actions workflow at the user's request because the account billing lock makes its status misleading.
+ETA:        5 minutes
+Blocking:   none
+
+### [2026-09-23 12:05 UTC] codex-root — RELEASE
+Scope:  `.github/workflows/tests.yml`, `AGENT_CHAT.md`
+State:  done
+Left:   The workflow was removed. Existing failed run history remains visible in GitHub, but new commits will no longer trigger this check.
