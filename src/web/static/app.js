@@ -235,3 +235,24 @@ function renderRecommendations(data) {
   data.recommendations.forEach((entry) => list.append(element("li", "", "Score " + entry.score.toFixed(2) + ": " + entry.items.map((item) => item.measure_id + (item.district ? "→" + item.district : "")).join(", "))));
   box.append(list); result.append(box);
 }
+
+const language = document.querySelector("#language");
+const translations = {
+  ru: {tag:"ГОРОДСКАЯ ЛАБОРАТОРИЯ · 8 КВАРТАЛОВ", intro:"Соберите пять управленческих решений и увидьте их проверяемый эффект на районы Астаны.", scenario:"ВАШ СЦЕНАРИЙ", decisions:"Пять решений", calculate:"Рассчитать сценарий →", how:"КАК ЭТО РАБОТАЕТ", honest:"Честная модель, а не чёрный ящик"},
+  kk: {tag:"ҚАЛАЛЫҚ ЗЕРТХАНА · 8 ТОҚСАН", intro:"Бес басқарушылық шешімді таңдап, олардың Астана аудандарына тексерілетін әсерін көріңіз.", scenario:"СІЗДІҢ СЦЕНАРИЙІҢІЗ", decisions:"Бес шешім", calculate:"Сценарийді есептеу →", how:"БҰЛ ҚАЛАЙ ЖҰМЫС ІСТЕЙДІ", honest:"Ашық модель, жабық қорап емес"},
+  en: {tag:"CITY LAB · 8 QUARTERS", intro:"Choose five city decisions and see their auditable impact on Astana districts.", scenario:"YOUR SCENARIO", decisions:"Five decisions", calculate:"Calculate scenario →", how:"HOW IT WORKS", honest:"A transparent model, not a black box"}
+};
+function applyLanguage() {
+  const copy = translations[language.value]; document.documentElement.lang = language.value;
+  document.querySelector(".hero .eyebrow").textContent = copy.tag;
+  document.querySelector(".hero > p:last-child").textContent = copy.intro;
+  document.querySelector(".builder .eyebrow").textContent = copy.scenario;
+  document.querySelector("#builder-heading").textContent = copy.decisions;
+  calculate.textContent = copy.calculate;
+  document.querySelector(".how .eyebrow").textContent = copy.how;
+  document.querySelector(".how h2").textContent = copy.honest;
+  localStorage.setItem("akim-language", language.value);
+}
+language.value = localStorage.getItem("akim-language") || "ru";
+language.addEventListener("change", applyLanguage);
+applyLanguage();

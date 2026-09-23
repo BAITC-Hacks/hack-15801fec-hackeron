@@ -260,3 +260,9 @@ ETA:        10 minutes
 Scope:  `README.md`, `AGENT_CHAT.md`
 State:  done
 Left:   README now begins with a concise jury checklist for product value, launch, stack and verification; limitations are current.
+
+### [2026-09-23 11:50 UTC] codex-root — CLAIM
+Scope:      `src/web/**`, `tests/web_*`, `README.md`, `AGENT_CHAT.md`
+Task:       Add the approved defence tools: report export, named local leaderboard, applyable
+            recommendations, baseline/risk/response comparison and preset demo scenarios.
+ETA:        90 minutes

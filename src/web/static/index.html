@@ -9,6 +9,7 @@
 <body>
   <main class="shell">
     <header class="hero">
+      <label class="language-picker">Language<select id="language"><option value="ru">Русский</option><option value="kk">Қазақша</option><option value="en">English</option></select></label>
       <p class="eyebrow">ГОРОДСКАЯ ЛАБОРАТОРИЯ · 8 КВАРТАЛОВ</p>
       <h1>Аким на 5 часов</h1>
       <p>Соберите пять управленческих решений и увидьте их проверяемый эффект на районы Астаны.</p>
@@ -21,6 +22,8 @@
     </section>
 
     <section class="scenario-tools" aria-label="Инструменты сценария">
+      <label>Команда<input id="team-name" type="text" value="Команда" maxlength="32"></label>
+      <label>Демо-сценарий<select id="demo-scenario"><option value="">Выберите сценарий</option><option value="minimum">Минимальный бюджет</option><option value="nura">Поддержка Нуры</option><option value="ecology">Экология</option><option value="balanced">Сбалансированный</option></select></label>
       <label>Городское событие<select id="risk-event"></select></label>
       <button id="save-scenario" type="button">Сохранить сценарий</button>
       <button id="export-report" type="button">Экспортировать отчёт</button>
